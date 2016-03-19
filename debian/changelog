@@ -59,6 +59,40 @@ dovecot (1:2.2.19-1) UNRELEASED; urgency=medium
 
  -- Jaldhar H. Vyas <jaldhar@debian.org>  Sun, 13 Dec 2015 09:41:56 -0500
 
+dovecot (1:2.2.18-2ubuntu2) wily; urgency=medium
+
+  * Merge with Debian (after 552 days); remaining changes:
+    + Add mail-stack-delivery package:
+      - Update d/rules
+      - d/control: convert existing dovecot-postfix package to a dummy
+        package and add new mail-stack-delivery package.
+      - Update maintainer scripts.
+      - Rename d/dovecot-postfix.* to debian/mail-stack-delivery.*
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.prerm: Added to handle downgrades.
+    + Use Snakeoil SSL certificates by default:
+      - d/control: Depend on ssl-cert.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + d/dovecot-core.dirs: Added usr/share/doc/dovecot-core
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Add upstart job:
+      - d/rules, d/dovecot-core.dovecot.upstart, d/control,
+        d/dovecot-core.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        d/dovecot-pop3d.{postinst, postrm, prerm}.
+        d/mail-stack-deliver.postinst: Convert init script to upstart.
+    + d/control: Drop dovecot-postfix package as its no longer required.
+    + Rename init.d script to work with the dh_installinit --name option, so
+      that it comes back.
+  * Drop build dependency on libstemmer-dev (universe).
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 14 Sep 2015 13:58:42 +0200
+
 dovecot (1:2.2.18-2) unstable; urgency=high
 
   * [3f3bf71] Updated pigeonhole patch to 0.4.8 (Closes: #792669)
