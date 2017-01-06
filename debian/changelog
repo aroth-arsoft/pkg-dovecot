@@ -1,3 +1,169 @@
+dovecot (1:2.2.25-1ubuntu2) zesty; urgency=medium
+
+  * Update "general" dep8 test with various cleanups, bugfixes and conversion
+    to Python 3. Since it now uses the "service" wrapper, the test must
+    additionally depend on init-system-helpers.
+
+ -- Robie Basak <robie.basak@ubuntu.com>  Tue, 08 Nov 2016 13:37:08 +0000
+
+dovecot (1:2.2.25-1ubuntu1) zesty; urgency=medium
+
+  * Merge with Debian (LP: #1633220); Remaining Changes:
+    + Add updated autopkgtest to debian/tests/*.
+    + Drop build dependency on libstemmer-dev (universe)
+    + Use Snakeoil SSL certificates by default
+      - d/control: Depend on ssl-cert
+    + Add mail-stack-delivery
+      - add package in d/rules, d/control
+      - add d/*mail-stack-delivery* maintainer scripts and default conf
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.README.Debian clarified use of configuration files
+    + Disable dovecot-lucene plugin as it had various issues, has universe
+      dependencies and is deprecated in favor of solr anyway.
+    + handle conffile removal of /etc/init/dovecot.conf (due to dropping
+      upstart). Can be removed once no upgrade path from <yakkety is left.
+  * Added changes:
+    + Fix FTBFS of dovecot 2.2.25 in Ubuntu due to being incompatible with
+      -Bsymbolic-functions linker flag (LP: #1636781).
+  * Dropped Changes as they got accepted in Debian:
+    + add lsb base dependency to ensure debian/dovecot-core.dovecot.init is
+      working correctly
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Remove lintian override for drac
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 25 Oct 2016 13:12:40 +0200
+
+dovecot (1:2.2.25-1) unstable; urgency=medium
+
+  * [cc29a81] Imported Upstream version 2.2.25
+  * [d19bcca] Updated pigeonhole patch to 0.4.14
+  * [16db179] Merged in some features of the Ubuntu dovecot package.
+    + dovecot-core: added lsb-base dependency.
+    + dovecot-core: Added apport hook.
+    + dovecot-imapd,dovecot-pop3d: Added ufw profiles.
+    Thanks to Christian Erhardt <christian.ehrhardt@canonical.com>
+    (Closes: #828864)
+
+ -- Jaldhar H. Vyas <jaldhar@debian.org>  Fri, 01 Jul 2016 17:07:03 -0400
+
+dovecot (1:2.2.24-1ubuntu1) yakkety; urgency=medium
+
+  * Merge with Debian; Remaining Changes:
+    + Add autopkgtest to debian/tests/*.
+    + Drop build dependency on libstemmer-dev (universe)
+    + Use Snakeoil SSL certificates by default
+      - d/control: Depend on ssl-cert
+    + add lsb base dependency to ensure debian/dovecot-core.dovecot.init is
+      working correctly
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Remove lintian override for drac
+    + Add mail-stack-delivery
+      - add package in d/rules, d/control
+      - add d/*mail-stack-delivery* maintainer scripts and default conf
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+  * Added Changes:
+    - Disable dovecot-lucene plugin as it had various issues, has universe
+      dependencies and is deprecated in favor of solr anyway (LP: #1524526).
+    - Fixup the autopkgtests we add to work with recent dovecot versions
+    - d/mail-stack-delivery.README.Debian clarified use of configuration files
+    - handle conffile removal of /etc/init/dovecot.conf (due to dropping
+      upstart). Can be removed once no upgrade path from <yakkety is left.
+  * Dropped Changes:
+    - Add upstart job (that means we no more add it now)
+    - no more needed upgrade handling of mail-stack-delivery related to
+      2.1.7-7 and 1.2.9-1ubuntu8 (both out of scope of any possible
+      paths now)
+    - d/dovecot-core.dirs: Added usr/share/doc/dovecot-core (was only left
+      in changelog)
+    - ntpdate Recommends (was missing in former Changelog, now superseded
+      by timesyncd which is available by default)
+    - adding of d/docs for dh_installdocs
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 21 Jun 2016 16:31:29 +0200
+
+dovecot (1:2.2.24-1) unstable; urgency=medium
+
+  * [26020b6] Imported Upstream version 2.2.24 (Closes: #818652)
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Mon, 09 May 2016 10:42:08 +0300
+
+dovecot (1:2.2.23-1) unstable; urgency=medium
+
+  [ Jaldhar H. Vyas ]
+  * Drop missing-expunges.patch, merged upstream
+
+  [ Apollon Oikonomopoulos ]
+  * [8a01915] Imported Upstream version 2.2.23
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Tue, 12 Apr 2016 17:30:03 +0300
+
+dovecot (1:2.2.22-1ubuntu4) xenial; urgency=medium
+
+  * Urgh. Previous upload added a runtime dependency on libstemmer0d to
+    dovecot-core that I missed. Revert it, and reopen LP: 1524526.
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 21 Apr 2016 09:59:28 +1000
+
+dovecot (1:2.2.22-1ubuntu3) xenial; urgency=medium
+
+  * Re-add build dependency on libstemmer-dev
+    - In universe, but only adds runtime dependencies to packages already in
+      universe.
+    - Fixes crash with missing symbol when enabling fts-lucene plugin
+      (LP: #1524526)
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 20 Apr 2016 12:44:08 +1000
+
+dovecot (1:2.2.22-1ubuntu2) xenial; urgency=medium
+
+  * Rebuild against libmysqlclient20.
+
+ -- Robie Basak <robie.basak@ubuntu.com>  Tue, 05 Apr 2016 12:19:25 +0000
+
+dovecot (1:2.2.22-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian; remaining changes:
+    + Add mail-stack-delivery package:
+      - Update d/rules
+      - d/control: convert existing dovecot-postfix package to a dummy
+        package and add new mail-stack-delivery package.
+      - Update maintainer scripts.
+      - Rename d/dovecot-postfix.* to debian/mail-stack-delivery.*
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.prerm: Added to handle downgrades.
+    + Use Snakeoil SSL certificates by default:
+      - d/control: Depend on ssl-cert.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + d/dovecot-core.dirs: Added usr/share/doc/dovecot-core
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Add upstart job:
+      - d/rules, d/dovecot-core.dovecot.upstart, d/control,
+        d/dovecot-core.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        d/dovecot-pop3d.{postinst, postrm, prerm}.
+        d/mail-stack-deliver.postinst: Convert init script to upstart.
+    + d/control: Drop dovecot-postfix package as its no longer required.
+    + Drop build dependency on libstemmer-dev (universe).
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 21 Mar 2016 19:44:11 +0100
+
 dovecot (1:2.2.22-1) unstable; urgency=medium
 
   [ Jaldhar H. Vyas ]
@@ -274,6 +440,76 @@ dovecot (1:2.2.10-1) unstable; urgency=low
 
  -- Jaldhar H. Vyas <jaldhar@debian.org>  Thu, 06 Mar 2014 02:51:34 -0500
 
+dovecot (1:2.2.9-1ubuntu5) utopic; urgency=medium
+
+  * No-change rebuild against current debhelper to drop unnecessary upstart
+    dependency. (LP: #1351306)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 03 Sep 2014 09:50:41 +0200
+
+dovecot (1:2.2.9-1ubuntu4) utopic; urgency=medium
+
+  * Rename init.d script to work with the dh_installinit --name option, so
+    that it comes back. (LP: #1323274)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Mon, 26 May 2014 14:24:43 +0200
+
+dovecot (1:2.2.9-1ubuntu3) utopic; urgency=medium
+
+  * SECURITY UPDATE: denial of service via SSL connection exhaustion
+    - debian/patches/CVE-2014-3430.patch: properly close connections in
+      src/login-common/client-common.c,
+      src/login-common/ssl-proxy-openssl.c,
+      src/login-common/ssl-proxy.h.
+    - CVE-2014-3430
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 15 May 2014 10:19:29 -0400
+
+dovecot (1:2.2.9-1ubuntu2) trusty; urgency=medium
+
+  * d/dovecot-core.config: Drop db_input for ssl-cert-exists; this message
+    not actually an error, is documented in the README.Debian, and blocks
+    automated upgrades (LP: #1278897).
+
+ -- James Page <james.page@ubuntu.com>  Fri, 07 Mar 2014 12:42:58 +0000
+
+dovecot (1:2.2.9-1ubuntu1) trusty; urgency=medium
+
+  * Merge from Debian unstable, remaining changes:
+    + Add mail-stack-delivery package:
+      - Update d/rules
+      - d/control: convert existing dovecot-postfix package to a dummy
+        package and add new mail-stack-delivery package.
+      - Update maintainer scripts.
+      - Rename d/dovecot-postfix.* to debian/mail-stack-delivery.*
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.prerm: Added to handle downgrades.
+    + Use Snakeoil SSL certificates by default:
+      - d/control: Depend on ssl-cert.
+      - d/dovecot-core.postinst: Relax grep for SSL_* a bit.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + d/dovecot-core.dirs: Added usr/share/doc/dovecot-core
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Add upstart job:
+      - d/rules, d/dovecot-core.dovecot.upstart, d/control,
+        d/dovecot-core.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        d/dovecot-pop3d.{postinst, postrm, prerm}.
+        d/mail-stack-deliver.postinst: Convert init script to upstart.
+    + Use the autotools-dev dh addon to update config.guess/config.sub for
+      arm64.
+  * Dropped changes, included in Debian:
+    - Update Dovecot name to reflect distribution in login greeting.
+    - Update Drac plugin for >= 2.0.0 support.
+  * d/control: Drop dovecot-postfix package as its no longer required.
+
+ -- James Page <james.page@ubuntu.com>  Wed, 08 Jan 2014 09:35:49 +0000
+
 dovecot (1:2.2.9-1) unstable; urgency=low
 
   [ Jaldhar H. Vyas ]
@@ -354,6 +590,78 @@ dovecot (1:2.1.7-8) experimental; urgency=low
     - Triggers.
 
  -- Jaldhar H. Vyas <jaldhar@debian.org>  Thu, 13 Jun 2013 16:14:21 -0400
+
+dovecot (1:2.1.7-7ubuntu3) saucy; urgency=low
+
+  * Use the autotools-dev dh addon to update config.guess/config.sub for
+    arm64.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Thu, 10 Oct 2013 11:55:27 +0100
+
+dovecot (1:2.1.7-7ubuntu2) saucy; urgency=low
+
+  * debian/patches/dovecot_name.patch: updated Dovecot name to reflect 
+    distribution in login greeting
+  * debian/control: added lsb-release as build-dependency
+  * debian/rules: added autoconf in config-stamp
+
+ -- Yolanda Robla <yolanda.robla@canonical.com>  Wed, 26 Jun 2013 08:34:42 +0200
+
+dovecot (1:2.1.7-7ubuntu1) raring; urgency=low
+
+  [ James Page ]
+  * Merge from Debian unstable (LP: #1117613, #1075456), remaining changes:
+    + Add mail-stack-delivery package:
+      - Update d/rules
+      - d/control: convert existing dovecot-postfix package to a dummy
+        package and add new mail-stack-delivery package.
+      - Update maintainer scripts.
+      - Rename d/dovecot-postfix.* to debian/mail-stack-delivery.*
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.prerm: Added to handle downgrades.
+    + Use Snakeoil SSL certificates by default:
+      - d/control: Depend on ssl-cert.
+      - d/dovecot-core.postinst: Relax grep for SSL_* a bit.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + d/dovecot-core.dirs: Added usr/share/doc/dovecot-core
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Add upstart job:
+      - d/rules, d/dovecot-core.dovecot.upstart, d/control,
+        d/dovecot-core.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        d/dovecot-pop3d.{postinst, postrm, prerm}.
+        d/mail-stack-deliver.postinst: Convert init script to upstart.
+    + d/control: Added Pre-Depends: dpkg (>= 1.15.6) to dovecot-dbg to support
+      xz compression in Ubuntu.
+    + d/control: Demote dovecot-common Recommends: to Suggests: to prevent
+      install of extra packages on upgrade.
+    + d/patches/dovecot-drac.patch: Updated with version for dovecot >= 2.0.0.
+  * Dropped changes, included in Debian:
+    + d/{control,rules}: enable PIE hardening.
+    + d/control: Drop B-D on systemd.
+  * d/p/mail-stack-delivery.postinst: Updated to ensure that configured SSL
+    cert and key locations are used when configuring postfix, sorted out
+    formatting.
+  * d/p/dovecot-core.postinst: Create compat links to old style, existing
+    SSL cert and key if found.
+  * d/rules: Don't pass hardening flags for DRAC plugin.
+  * d/dovecot-{pop3d,imapd}.prerm: Re-sync with Debian.
+  * d/dovecot-core.lintian-overrides: Drop override for DRAC plugin as not
+    required in Ubuntu.
+  * d/01-mail-stack-delivery: Renamed 99-mail-stack-delivery to ensure that
+    the mail-stack-delivery configuration overrides configuration options
+    set elsewhere, updated with new cert/key file locations.
+
+  [ Ante Karamatic ]
+  * Change configuration file for LDA on new installs and upgrades
+    (LP: #671065).
+
+ -- James Page <james.page@ubuntu.com>  Mon, 11 Feb 2013 12:41:24 +0000
 
 dovecot (1:2.1.7-7) unstable; urgency=high
 
@@ -450,6 +758,53 @@ dovecot (1:2.1.7-2) unstable; urgency=low
 
  -- Jaldhar H. Vyas <jaldhar@debian.org>  Thu, 21 Jun 2012 23:54:47 -0400
 
+dovecot (1:2.1.7-1ubuntu2) quantal; urgency=low
+
+  * d/dovecot-core.dovecot.upstart: Respawn to handle unexpected but
+    recoverable problems. (LP: #718188)
+
+ -- Clint Byrum <clint@ubuntu.com>  Thu, 09 Aug 2012 12:22:52 -0700
+
+dovecot (1:2.1.7-1ubuntu1) quantal; urgency=low
+
+  * Merge from Debian unstable, remaining changes:
+    + Add mail-stack-delivery package:
+      - Update d/rules
+      - d/control: convert existing dovecot-postfix package to a dummy
+        package and add new mail-stack-delivery package.
+      - Update maintainer scripts.
+      - Rename d/dovecot-postfix.* to debian/mail-stack-delivery.*
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.prerm: Added to handle downgrades.
+    + Use Snakeoil SSL certificates by default:
+      - d/control: Depend on ssl-cert.
+      - d/dovecot-core.postinst: Relax grep for SSL_* a bit.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + d/{control,rules}: enable PIE hardening.
+    + d/dovecot-core.dirs: Added usr/share/doc/dovecot-core
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Add upstart job:
+      - d/rules, d/dovecot-core.dovecot.upstart, d/control,
+        d/dovecot-core.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        d/dovecot-pop3d.{postinst, postrm, prerm}.
+        d/mail-stack-deliver.postinst: Convert init script to upstart.
+    + d/control: Added Pre-Depends: dpkg (>= 1.15.6) to dovecot-dbg to support
+      xz compression in Ubuntu.
+    + d/control: Demote dovecot-common Recommends: to Suggests: to prevent
+      install of extra packages on upgrade.
+    + d/patches/dovecot-drac.patch: Updated with version for dovecot >= 2.0.0.
+    + d/control: Drop B-D on systemd.
+  * Dropped changes:
+    + d/patches/fix-racey-restart.patch: part of 2.1.x, no longer required.
+
+ -- James Page <james.page@ubuntu.com>  Mon, 11 Jun 2012 11:11:54 +0100
+
 dovecot (1:2.1.7-1) unstable; urgency=low
 
   * [7668742] Imported upstream 2.1.7 (Closes: #663243)
@@ -488,6 +843,49 @@ dovecot (1:2.1.1-1) experimental; urgency=low
 
  -- Micah Anderson <micah@debian.org>  Tue, 13 Mar 2012 23:08:06 -0400
 
+dovecot (1:2.0.19-0ubuntu1) precise; urgency=low
+
+  * New upstream release (LP: #970782).
+  * Merge from Debian testing, remaining changes:
+    + Add mail-stack-delivery package:
+      - Update d/rules
+      - d/control: convert existing dovecot-postfix package to a dummy
+        package and add new mail-stack-delivery package.
+      - Update maintainer scripts.
+      - Rename d/dovecot-postfix.* to debian/mail-stack-delivery.*
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.prerm: Added to handle downgrades.
+    + Use Snakeoil SSL certificates by default:
+      - d/control: Depend on ssl-cert.
+      - d/dovecot-core.postinst: Relax grep for SSL_* a bit.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + d/{control,rules}: enable PIE hardening.
+    + d/dovecot-core.dirs: Added usr/share/doc/dovecot-core
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Add upstart job:
+      - d/rules, d/dovecot-core.dovecot.upstart, d/control,
+        d/dovecot-core.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        d/dovecot-pop3d.{postinst, postrm, prerm}.
+        d/mail-stack-deliver.postinst:
+        Convert init script to upstart.
+    + d/patches/fix-racey-restart.patch: Backported patch from current
+      development release which ensures all child processes terminate prior
+      to the main dovecot process.
+    + debian/patches/CVE-2011-4318.patch: Dropped - applied upstream
+    + d/control: Added Pre-Depends: dpkg (>= 1.15.6) to dovecot-dbg to support
+      xz compression in Ubuntu.
+    + d/control: Demote dovecot-common Recommends: to Suggests: to prevent
+      install of extra packages on upgrade.
+  * d/patches/dovecot-drac.patch: Updated with version for dovecot >= 2.0.0.
+
+ -- James Page <james.page@ubuntu.com>  Wed, 04 Apr 2012 14:56:38 +0100
+
 dovecot (1:2.0.18-1) unstable; urgency=low
 
   * [85ae320] Imported Upstream version 2.0.18
@@ -500,6 +898,78 @@ dovecot (1:2.0.18-1) unstable; urgency=low
   * [00b0d0c] Updated pigeonhole to 0.2.6
 
  -- Jaldhar H. Vyas <jaldhar@debian.org>  Fri, 09 Mar 2012 00:55:13 -0500
+
+dovecot (1:2.0.15-1ubuntu5) precise; urgency=low
+
+  * SECURITY UPDATE: Incorrect cert Common Name verification when proxying
+    - debian/patches/CVE-2011-4318.patch: correctly validate Common Name
+      when a hostname is specified in src/login-common/{login-proxy.c,
+      ssl-proxy.*,ssl-proxy-openssl.c}.
+    - CVE-2011-4318
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 08 Dec 2011 14:34:36 -0500
+
+dovecot (1:2.0.15-1ubuntu4) precise; urgency=low
+
+  * No-change rebuild to drop spurious libsfgcc1 dependency on armhf.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Fri, 02 Dec 2011 17:39:55 -0700
+
+dovecot (1:2.0.15-1ubuntu3) precise; urgency=low
+
+  * Rebuild for libmysqlclient transition.
+
+ -- Clint Byrum <clint@ubuntu.com>  Wed, 23 Nov 2011 16:38:01 -0800
+
+dovecot (1:2.0.15-1ubuntu2) precise; urgency=low
+
+  * Resolve issue with intermittent restart failures (LP: #873390):
+    - d/patches/fix-racey-restart.patch: Backported patch from current 
+      development release which ensures all child processes terminate prior
+      to the main dovecot process. 
+
+ -- James Page <james.page@ubuntu.com>  Fri, 11 Nov 2011 14:38:41 +0000
+
+dovecot (1:2.0.15-1ubuntu1) precise; urgency=low
+
+  * Merge from Debian Testing, remaining changes:
+    + Add mail-stack-delivery package:
+      - Update d/rules
+      - d/control: convert existing dovecot-postfix package to a dummy
+        package and add new mail-stack-delivery package.
+      - Update maintainer scripts.
+      - Rename d/dovecot-postfix.* to debian/mail-stack-delivery.*
+      - d/mail-stack-delivery.preinst: Move previously installed backups and 
+        config files to a new package namespace.
+      - d/mail-stack-delivery.prerm: Added to handle downgrades.
+    + Use Snakeoil SSL certificates by default:
+      - d/control: Depend on ssl-cert.
+      - d/dovecot-core.postinst: Relax grep for SSL_* a bit.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - d/dovecot-core.ufw.profile: new ufw profile.
+      - d/rules: install profile in dovecot-core.
+      - d/control: dovecot-core - suggest ufw.
+    + d/{control,rules}: enable PIE hardening.
+    + d/dovecot-core.dirs: Added usr/share/doc/dovecot-core
+    + Add apport hook:
+      - d/rules, d/source_dovecot.py
+    + Add upstart job:
+      - d/rules, d/dovecot-core.dovecot.upstart, d/control,
+        d/dovecot-core.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        d/dovecot-pop3d.{postinst, postrm, prerm}. 
+        d/mail-stack-deliver.postinst:
+        Convert init script to upstart.
+  * d/01-mail-stack-delivery.conf: Add postfix->dovecot auth listener
+    to mail-stack-delivery configuration (LP: #874135).
+  * d/mail-stack-delivery.{postinst,postrm}: Restart dovecot to pickup/drop
+    mail-stack-delivery configuration (LP: #870244).
+  * d/control: Added Pre-Depends: dpkg (>= 1.15.6) to dovecot-dbg to support
+    xz compression in Ubuntu.
+  * d/control: Demote dovecot-common Recommends: to Suggests: to prevent
+    install of extra packages on upgrade.
+
+ -- James Page <james.page@ubuntu.com>  Wed, 19 Oct 2011 15:54:40 +0100
 
 dovecot (1:2.0.15-1) unstable; urgency=low
 
@@ -595,6 +1065,60 @@ dovecot (1:2.0.13-1.1) unstable; urgency=low
 
  -- Luk Claes <luk@debian.org>  Sat, 18 Jun 2011 12:31:28 +0200
 
+dovecot (1:2.0.13-1ubuntu3) oneiric; urgency=medium
+
+  [ Ben Howard ]
+  * debian/dovecot-common.dovecot.upstart: changed start to runlevel [2345]
+    (LP: #820685)
+
+  [ James Page ]
+  * Make mail-stack-delivery work with new version of dovecot (LP: #860336):
+    - debian/control: Added dovecot-managesieved to mail-stack-delivery Depends.
+    - debian/01-mail-stack-delivery.conf: Renamed mangesieve protocol -> sieve. 
+      Tidied up obsolete and changed configuration stanzas.
+    - debian/mail-stack-delivery.postinst: drop -n flag from dovecot deliver 
+      command in postfix configuration.
+
+ -- Ben Howard <ben.howard@canonical.com>  Mon, 19 Sep 2011 14:44:56 -0600
+
+dovecot (1:2.0.13-1ubuntu2) oneiric; urgency=low
+
+  * debian/dovecot-common.postinst: fix ssl cert typos that prevent
+    certs from being generated (LP: #792557)
+
+ -- Steve Beattie <sbeattie@ubuntu.com>  Fri, 03 Jun 2011 14:02:53 -0700
+
+dovecot (1:2.0.13-1ubuntu1) oneiric; urgency=low
+
+  * Merge from Debian Unstable, remaining changes: 
+    + Add mail-stack-delivery as per server-maverick-mail-integration spec:
+      - Update debian/rules
+      - Convert existing package to a dummy package and new binary in debian/control.
+      - Update maintainer scripts.
+      - Move previously installed backups and config files to a new package namespace in preinst.
+      - Add new debian/mail-stack-delivery.prerm to handle downgrades.
+      - Rename debian/dovecot-postfix.* to debian/mail-stack-delivery.*
+    + Use Snakeoil SSL certifications by default:
+      - debian/control: Depend on ssl-cert.
+      - debian/dovecot-common.postinst: Relax grep for SSL_* a bit.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - Create debian/dovecot-common.ufw.profile.
+      - debian/rules: install profile
+      - debian/control: suggest ufw.
+    + debian/{control,rules}: enable PIE hardening.
+    + debian/dovecot-common.dirs: Added usr/share/doc/dovecot-common
+    + Add apport hook:
+      - debian/rules, debian/source_dovecot.py
+    + Add upstart job:
+      - debian/rules, debian/dovecot-common.dovecot.upstart, debian/control,
+        debian/dovecot-common.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        debian/dovecot-pop3d.{postinst, postrm, prerm}. mail-stack-deliver.postinst:
+        Convert init script to upstart. Apart of the server-maverick-upstart-conversion
+        specification.
+
+ -- Chuck Short <zulcss@ubuntu.com>  Wed, 01 Jun 2011 13:32:07 -0400
+
 dovecot (1:2.0.13-1) unstable; urgency=high
 
   [ Marco Nenciarini ]
@@ -618,6 +1142,37 @@ dovecot (1:2.0.13-1) unstable; urgency=high
     (Closes: #627443)
 
  -- Marco Nenciarini <mnencia@debian.org>  Sat, 21 May 2011 23:58:06 +0200
+
+dovecot (1:2.0.12-1ubuntu1) oneiric; urgency=low
+
+  * Merge from Debian Unstable, remaining changes are:
+    + Add mail-stack-delivery as per server-maverick-mail-integration spec:
+      - Update debian/rules
+      - Convert existing package to a dummy package and new binary in debian/control.
+      - Update maintainer scripts.
+      - Move previously installed backups and config files to a new package namespace in preinst.
+      - Add new debian/mail-stack-delivery.prerm to handle downgrades.
+      - Rename debian/dovecot-postfix.* to debian/mail-stack-delivery.*
+    + Use Snakeoil SSL certifications by default:
+      - debian/control: Depend on ssl-cert.
+      - debian/dovecot-common.postinst: Relax grep for SSL_* a bit.
+    + Add autopkgtest to debian/tests/*.
+    + Add ufw integration:
+      - Create debian/dovecot-common.ufw.profile.
+      - debian/rules: install profile
+      - debian/control: suggest ufw.
+    + debian/{control,rules}: enable PIE hardening.
+    + debian/dovecot-common.dirs: Added usr/share/doc/dovecot-common
+    + Add apport hook:
+      - debian/rules, debian/source_dovecot.py
+    + Add upstart job:
+      - debian/rules, debian/dovecot-common.dovecot.upstart, debian/control,
+        debian/dovecot-common.dirs, dovecot-imapd.{postrm, postinst, prerm},
+        debian/dovecot-pop3d.{postinst, postrm, prerm}. mail-stack-deliver.postinst:
+        Convert init script to upstart. Apart of the server-maverick-upstart-conversion
+        specification.
+
+ -- Chuck Short <zulcss@ubuntu.com>  Mon, 16 May 2011 10:18:41 -0400
 
 dovecot (1:2.0.12-1) unstable; urgency=low
 

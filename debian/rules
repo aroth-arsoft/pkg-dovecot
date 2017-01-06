@@ -9,6 +9,11 @@ export DEB_BUILD_MAINT_OPTIONS=hardening=+all
 # DRAC doesn't build with -fPIE
 drac_buildflags = DEB_BUILD_MAINT_OPTIONS="hardening=+all,-pie" dpkg-buildflags
 
+# LP: 1636781 - strip incompatible default linker option
+ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
+  export DEB_LDFLAGS_MAINT_STRIP = -Wl,-Bsymbolic-functions
+endif
+
 # Macros to help move files to the module packages
 CORE_DIR=$(CURDIR)/debian/dovecot-core
 PKG_DIR=$(CURDIR)/debian/dovecot-PKG
@@ -57,8 +62,6 @@ sieve_files = usr/bin/sieve* \
 
 solr_files = usr/lib/dovecot/modules/lib??_fts_solr_*
 
-lucene_files = usr/lib/dovecot/modules/lib??_fts_lucene_*
-
 dev_files = usr/include/* \
 	    usr/lib/dovecot/dovecot-config
 
@@ -77,7 +80,7 @@ override_dh_auto_configure:
 	            --with-solr \
 	            --with-ioloop=best \
 	            --with-libwrap \
-	            --with-lucene \
+	            --without-lucene \
 		    --with-lz4 \
 	            --prefix=/usr \
 	            --sysconfdir=/etc \
@@ -142,6 +145,15 @@ override_dh_install:
 	grep ABI_VERSION config.h \
 		| perl -ne '/"(.+)\(.+\)"/ && print $$1' \
 		| tr '[A-Z]' '[a-z]' > $(PKG_DIR:PKG=dev)/usr/share/dovecot/dovecot-abi
+	
+	# Install apport hook
+	install -D -m 644 debian/source_dovecot.py $(CURDIR)/debian/dovecot-core/usr/share/apport/package-hooks/dovecot-core.py
+
+	install -m644 debian/dovecot-imapd.ufw.profile debian/dovecot-imapd/etc/ufw/applications.d/dovecot-imapd
+	install -m644 debian/dovecot-pop3d.ufw.profile debian/dovecot-pop3d/etc/ufw/applications.d/dovecot-pop3d
+
+	mkdir -p $(CURDIR)/debian/mail-stack-delivery/etc/dovecot/conf.d/
+	cp $(CURDIR)/debian/99-mail-stack-delivery.conf $(CURDIR)/debian/mail-stack-delivery/etc/dovecot/conf.d/
 
 override_dh_installpam:
 	dh_installpam -pdovecot-core --name=dovecot

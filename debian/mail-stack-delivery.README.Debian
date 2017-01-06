@@ -5,9 +5,8 @@ Mail-stack-delivery will not install any binary or library files. This package
 contains only configuration file /etc/dovecot/mail-stack-delivery.conf with
 configuration prerpared by Ubuntu Server Team.
 
-dovecot's init script checks existance of
-/etc/dovecot/mail-stack-delivery.conf and if that file exists, it reads it
-instead of /etc/dovecot/dovecot.conf.
+The matching configuration for dovecot is placed in:
+  /etc/dovecot/conf.d/99-mail-stack-delivery.conf
 
 During installation of package, it modifies postfix's configuration and
 stores original version of /etc/postfix/main.cf in /var/backup/mail-stack-delivery.

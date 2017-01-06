@@ -4,3 +4,9 @@ Restrictions: needs-root
 
 Tests: systemd
 Depends: dovecot-core, systemd-sysv
+
+# the old Ubuntu tests
+Tests: general
+Restrictions: needs-root
+Features: no-build-needed
+Depends: python3, dovecot-imapd, dovecot-pop3d, dovecot-managesieved, mail-stack-delivery, init-system-helpers
