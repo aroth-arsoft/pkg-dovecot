@@ -1,3 +1,15 @@
+dovecot (1:2.2.27-2ubuntu2.1~aroth3) yakkety; urgency=medium
+
+  * try to fix build errors
+
+ -- Andreas Roth <aroth@arsoft-online.com>  Wed, 12 Apr 2017 15:39:50 +0200
+
+dovecot (1:2.2.27-2ubuntu2.1~aroth2) yakkety; urgency=medium
+
+  * rebuild
+
+ -- Andreas Roth <aroth@arsoft-online.com>  Wed, 12 Apr 2017 14:54:43 +0200
+
 dovecot (1:2.2.27-2ubuntu2.1~aroth1) yakkety; urgency=medium
 
   * backport latest version
