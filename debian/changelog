@@ -1,3 +1,41 @@
+dovecot (1:2.2.27-2ubuntu2.1~aroth1) yakkety; urgency=medium
+
+  * backport latest version
+
+ -- Andreas Roth <aroth@arsoft-online.com>  Wed, 12 Apr 2017 09:33:02 +0200
+
+dovecot (1:2.2.27-2ubuntu2) zesty; urgency=medium
+
+  * SECURITY UPDATE: DoS via crafted username
+    - debian/patches/CVE-2017-2669.patch: do not double-expand key in
+      passdb dict when authenticating in src/auth/db-dict.c.
+    - CVE-2017-2669
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 07 Apr 2017 13:31:02 -0400
+
+dovecot (1:2.2.27-2ubuntu1) zesty; urgency=medium
+
+  * Merge with Debian; Remaining Changes:
+    + Add updated autopkgtest to debian/tests/*.
+    + Drop build dependency on libstemmer-dev (universe)
+    + Use Snakeoil SSL certificates by default
+      - d/control: Depend on ssl-cert
+    + Add mail-stack-delivery
+      - add package in d/rules, d/control
+      - add d/*mail-stack-delivery* maintainer scripts and default conf
+      - d/mail-stack-delivery.preinst: Move previously installed backups and
+        config files to a new package namespace.
+      - d/mail-stack-delivery.README.Debian clarified use of configuration files
+    + Disable dovecot-lucene plugin as it had various issues, has universe
+      dependencies and is deprecated in favor of solr anyway.
+    + handle conffile removal of /etc/init/dovecot.conf (due to dropping
+      upstart). Can be removed once no upgrade path from <yakkety is left.
+  * Dropped changes:
+    + Fix FTBFS of dovecot 2.2.25 in Ubuntu due to being incompatible with
+      -Bsymbolic-functions linker flag (in Debian).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 09 Feb 2017 15:24:55 +0100
+
 dovecot (1:2.2.27-2ubuntu0.1~aroth1) yakkety; urgency=medium
 
   * take latest debian version and build with ubuntu changes
